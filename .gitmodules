@@ -1,0 +1,3 @@
+[submodule "vegetables_detection"]
+	path = vegetables_detection
+	url = https://github.com/ayyucedemirbas/vegetables_detection.git
