@@ -10,9 +10,20 @@ folder_path = "ROOT/exp/labels/"
 file_path = folder_path + "uploaded.txt"
 id2classname = ['lettuce', 'potato', 'carrot', 'onion', 'garlic', 'leek', 'broccoli']
 
-def 當冰箱門關上時():
-    圖片 = 攝影機.拍照()
-    圖片.存檔("uploaded.png")
+recv_thread = threading.Thread(target=receive, daemon=True)
+recv_thread.start()
+cap = cv2.VideoCapture(0)
+
+while True: 
+    _, frame = cap.read()
+
+    cv2.imshow('Stream', frame)
+    keyCode = cv2.waitKey(1)
+
+    if cv2.getWindowProperty('Stream', cv2.WND_PROP_VISIBLE) <1:
+        break
+    elif keyCode == 13:     # 按下Enter鍵時
+        cv2.imwrite('uploaded.png', frame)
     
     run(weights='yolov5/runs/train/yolo_veg_det/weights/best.pt',
         source='./uploaded.png',
@@ -46,5 +57,4 @@ def 當冰箱門關上時():
     print(dict(zip(id2classname, reserve)))
     shutil.rmtree("ROOT")
     
-recv_thread = threading.Thread(target=receive, daemon=True)
-recv_thread.start()
+cap.release()
