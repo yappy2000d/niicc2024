@@ -2,7 +2,7 @@ from collections import Counter
 import csv, os, time, shutil
 import threading
 
-from uart import receive
+from uart import receive, send
 from yolov5.detect import run
 
 
@@ -41,7 +41,7 @@ def 當冰箱門關上時():
             for id, count in counter.items():
                 reserve[int(id)] = count
 
-    # send(*reserve)
+    send(*reserve)
     
     print(dict(zip(id2classname, reserve)))
     shutil.rmtree("ROOT")
